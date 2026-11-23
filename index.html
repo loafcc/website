@@ -1,10 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>my website</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>About Me — Maker &amp; Photographer</title>
+<style>
+:root{--bg:#0a0e14;--panel:#111823;--line:#1f2a3a;--text:#d7e2f0;--muted:#8394a9;--accent:#39ff9c;--accent2:#4cc2ff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0e14;--panel:#111823;--line:#1f2a3a;--text:#d7e2f0;--muted:#8394a9;--accent:#39ff9c;--accent2:#4cc2ff}}
+:root[data-theme="dark"]{--bg:#0a0e14;--panel:#111823;--line:#1f2a3a;--text:#d7e2f0;--muted:#8394a9;--accent:#39ff9c;--accent2:#4cc2ff}
+html{scroll-padding-top:env(safe-area-inset-top,0px);color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:ui-monospace,"JetBrains Mono","Fira Code",Menlo,Consolas,monospace;line-height:1.6;
+background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:48px 48px;background-position:-1px -1px}
+main{max-width:860px;margin:0 auto;padding:48px 20px 64px}
+.hero{padding:28px;background:var(--panel);border:1px solid var(--line);border-radius:10px}
+.prompt{color:var(--muted);font-size:.85rem}.prompt b{color:var(--accent);font-weight:400}
+h1{font-size:clamp(1.9rem,6vw,3rem);margin:.3em 0 .1em;line-height:1.15}
+h1 span{color:var(--accent)}
+.tag{color:var(--accent2);margin:0 0 14px}
+.cursor{display:inline-block;width:.6ch;height:1.1em;background:var(--accent);vertical-align:-.15em;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+h2{font-size:1rem;color:var(--accent);margin:40px 0 14px;font-weight:600}
+h2::before{content:"// ";color:var(--muted)}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px}
+.card h3{margin:0 0 6px;font-size:.95rem;color:var(--accent2)}
+.card p{margin:0;color:var(--muted);font-size:.88rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0;list-style:none}
+.chips li{border:1px solid var(--line);background:var(--panel);padding:5px 12px;border-radius:999px;font-size:.85rem}
+.chips li::before{content:"› ";color:var(--accent)}
+.chips li.lang{display:inline-flex;align-items:center;gap:8px;border-color:#f7df1e}
+.chips li.lang::before{content:none}
+.jsicon{display:inline-block;width:20px;height:20px;background:#f7df1e;color:#000;font-weight:700;font-size:.7rem;line-height:20px;text-align:center;border-radius:3px;letter-spacing:-.5px}
+.links{display:flex;flex-wrap:wrap;gap:10px}
+.links a{color:var(--text);text-decoration:none;border:1px solid var(--accent);padding:8px 16px;border-radius:6px;font-size:.9rem;transition:.15s}
+.links a:hover,.links a:focus-visible{background:var(--accent);color:var(--bg);outline:none}
+footer{margin-top:48px;color:var(--muted);font-size:.8rem}
+</style>
 </head>
 <body>
-    <h1>hello, world!</h1>
-    <p>hosted on github pages.</p>
+<main>
+  <section class="hero">
+    <div class="prompt"><b>$</b> whoami</div>
+    <h1>Hi, I’m <span>Horia</span><span class="cursor"></span></h1>
+    <p class="tag">Maker · Photographer — Bucharest, Romania</p>
+    <p>I like taking things apart, building them better, and pointing a camera at whatever looks interesting. Most of my free time goes into tinkering with random things and shooting photos on both digital and film.</p>
+  </section>
+
+  <h2>skills</h2>
+  <ul class="chips">
+    <li class="lang"><span class="jsicon" aria-hidden="true">JS</span>JavaScript</li><li>Hardware tinkering</li><li>Raspberry Pi</li><li>Digital photography</li><li>Film photography</li><li>Gadget hunting</li>
+  </ul>
+
+  <h2>hobbies &amp; interests</h2>
+  <div class="grid">
+    <div class="card"><h3>Building &amp; tinkering</h3><p>Fun, unusual gadgets and hands-on projects, including a Raspberry Pi 4 on the bench.</p></div>
+    <div class="card"><h3>Photography</h3><p>Shooting with a Nikon D7100 and a few film cameras.</p></div>
+  </div>
+
+  <h2>contact</h2>
+  <div class="links">
+    <a href="mailto:loafcccc@gmail.com">email</a>
+    <a href="https://github.com/loafcc">github</a>
+    <a href="https://www.instagram.com/loaf.photographs">instagram</a>
+  </div>
+
+  <footer>© 2026 loafc</footer>
+</main>
 </body>
 </html>
