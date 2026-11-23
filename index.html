@@ -209,10 +209,15 @@ function caretPos(x,y){
   if(document.caretPositionFromPoint){const p=document.caretPositionFromPoint(x,y);if(p){n=p.offsetNode;o=p.offset}}
   else if(document.caretRangeFromPoint){const r=document.caretRangeFromPoint(x,y);if(r){n=r.startContainer;o=r.startOffset}}
   if(!n||n.nodeType!==3||!n.parentElement||!n.parentElement.closest('main')||!n.length)return null;
-  const q=document.createRange(),end=o>=n.length;
-  q.setStart(n,end?n.length-1:o);q.setEnd(n,end?n.length:o+1);
-  const r=q.getClientRects()[0];
-  return r?{x:end?r.right:r.left,y:r.top,h:r.height,hw:r.width/2,n:n,o:o}:null;
+  const L=n.length,end=o>=L,q=document.createRange();
+  q.setStart(n,end?L-1:o);q.setEnd(n,end?L:o+1);
+  const r=q.getClientRects()[0];if(!r)return null;
+  // only count it if the pointer is really on the characters next to the boundary
+  const u=document.createRange();u.setStart(n,Math.max(o-1,0));u.setEnd(n,Math.min(o+1,L));
+  let ok=false;for(const k of u.getClientRects()){if(x>=k.left-1&&x<=k.right+1&&y>=k.top-1&&y<=k.bottom+1){ok=true;break}}
+  if(!ok)return null;
+  const ub=u.getBoundingClientRect(),bx=end?r.right:r.left;
+  return {x:bx,y:r.top,h:r.height,x0:Math.max(bx-r.width/2,ub.left),x1:Math.min(bx+r.width/2,ub.right),n:n,o:o};
 }
 function wordRect(n,o){
   const s=n.data;let i=Math.min(o,s.length-1);
@@ -225,7 +230,7 @@ function hit(x,y){
   if(hc&&x>=hc.x0&&x<hc.x1&&y>=hc.y&&y<hc.y+hc.h)return hc;
   const c=caretPos(x,y);
   if(!c){hc=null;return null}
-  c.w=wordRect(c.n,c.o);c.x0=c.x-c.hw;c.x1=c.x+c.hw;hc=c;return c;
+  c.w=wordRect(c.n,c.o);hc=c;return c;
 }
 function measure(){const m=NM.cloneNode();m.removeAttribute('id');m.style.cssText='position:absolute;visibility:hidden;white-space:nowrap';m.textContent='Horia';NM.parentNode.appendChild(m);maxW=m.getBoundingClientRect().width+14;m.remove()}
 measure();
@@ -252,7 +257,7 @@ function frame(){
   const c=isTxt?hit(px,py):null;
   if(c){
     CR.style.height=c.h+'px';CR.style.transform=`translate(${c.x}px,${c.y}px)`;CR.classList.add('on');
-    if(!snapped&&c.w&&c.w.width){const w=c.w;place(w.left-6,w.top-4,w.width+12,w.height+8,true);snapped=true}
+    if(!snapped&&c.w&&c.w.width&&px>=c.w.left-2&&px<=c.w.right+2&&py>=c.w.top-2&&py<=c.w.bottom+2){const w=c.w;place(w.left-6,w.top-4,w.width+12,w.height+8,true);snapped=true}
   }else CR.classList.remove('on');
   if(!snapped)place(px-28,py-28,56,56,false);
 }
@@ -266,7 +271,7 @@ document.addEventListener('pointerdown',e=>{
   if(e.pointerType!=='touch'){CU.classList.add('down');return}
   const t=e.target.closest&&e.target.closest(SNAP);
   if(t){const r=t.getBoundingClientRect();place(r.left-6,r.top-6,r.width+12,r.height+12,true)}
-  else{const c=caretPos(e.clientX,e.clientY),w=c&&wordRect(c.n,c.o);if(w&&w.width)place(w.left-6,w.top-4,w.width+12,w.height+8,true);else place(e.clientX-28,e.clientY-28,56,56,false)}
+  else{const c=caretPos(e.clientX,e.clientY),w=c&&wordRect(c.n,c.o);if(w&&w.width&&e.clientX>=w.left-2&&e.clientX<=w.right+2&&e.clientY>=w.top-2&&e.clientY<=w.bottom+2)place(w.left-6,w.top-4,w.width+12,w.height+8,true);else place(e.clientX-28,e.clientY-28,56,56,false)}
   clearTimeout(touchT);touchT=setTimeout(()=>F.classList.remove('on'),900);
 },{passive:true});
 document.addEventListener('pointerup',()=>CU.classList.remove('down'),{passive:true});
